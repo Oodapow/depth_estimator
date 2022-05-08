@@ -83,7 +83,7 @@ class EstimatorExperiment(pl.LightningModule):
             e_mask = Image.fromarray(np.uint8((e_masks[0] * 255).cpu().numpy()))
             e_depth = Image.fromarray(np.uint8((e_depths[0] * 255).cpu().numpy()))
             
-            self.logger.log_image(key=f'{split}/sample_{i}', images=[image, mask, depth, e_mask, e_depth])
+            self.logger.log_image(key=f'{split}_images/sample_{i}', images=[image, mask, depth, e_mask, e_depth])
 
     def validation_epoch_end(self, all_outputs):
         self.log_epoch_end(all_outputs, 'eval')
