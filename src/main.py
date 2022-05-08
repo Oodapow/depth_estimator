@@ -13,7 +13,7 @@ if __name__ == '__main__':
     parser.add_argument('-ni', '--num_images', type=int, default=10)
     parser.add_argument('-ll', '--log_loss_rate', type=int, default=100)
     parser.add_argument('-g', '--gpus', type=int, default=1)
-    parser.add_argument('-me', '--max_epochs', type=int, default=500)
+    parser.add_argument('-me', '--max_epochs', type=int, default=100)
     parser.add_argument('-pr', '--progress_bar_refresh_rate', type=int, default=1)
     parser.add_argument('-n', '--name', type=str, default='')
     args = parser.parse_args()

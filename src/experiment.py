@@ -18,7 +18,7 @@ class EstimatorExperiment(pl.LightningModule):
         self.log_loss_rate = log_loss_rate
 
         self.model = EstimatorModel()
-        self.depth_loss = torch.nn.MSELoss()
+        self.depth_loss = torch.nn.L1Loss()
         self.mask_loss = torch.nn.BCELoss()
 
 
