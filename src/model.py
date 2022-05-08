@@ -39,6 +39,7 @@ class EstimatorModel(torch.nn.Module):
         self.upsaple8 = torch.nn.UpsamplingBilinear2d(scale_factor=8)
         self.upsaple4 = torch.nn.UpsamplingBilinear2d(scale_factor=4)
         self.upsaple2 = torch.nn.UpsamplingBilinear2d(scale_factor=2)
+        self.sigmoid = torch.nn.Sigmoid()
     
     def forward(self, images):
         x = images
@@ -74,10 +75,13 @@ class EstimatorModel(torch.nn.Module):
         assert x_depth.shape == x_seg.shape
         N, _, H, W = x_seg.shape
 
-        return x_seg.view(N, H, W), x_depth.view(N, H, W)
+        x_depth = x_depth.view(N, H, W)
+        x_seg = x_seg.view(N, H, W)
+
+        return self.sigmoid(x_seg), self.sigmoid(x_depth)
 
 if __name__ == '__main__':
-    from data import DepthEstimatorDataset
+    from data import DepthEstimatorDataset, collate_fn
     import cv2
 
     data_path = '/home/oodapow/data/RHD_published_v2'

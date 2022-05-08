@@ -1,4 +1,4 @@
-from torch.utils.data import Dataset
+import torch
 import pickle
 import os
 import cv2
@@ -11,8 +11,16 @@ def depth_two_uint8_to_float(top_bits, bottom_bits):
     return (depth_map * 255).astype('uint8')
 
 
-class DepthEstimatorDataset(Dataset):
-    def __init__(self, path, split):
+def collate_fn(batch):
+    images = torch.stack([torch.tensor(b[0]).permute(2, 0, 1).div(255.) for b in batch])
+    masks = torch.stack([torch.tensor(b[1]).div(255.) for b in batch])
+    depths = torch.stack([torch.tensor(b[2]).div(255.) for b in batch])
+
+    return images, masks, depths
+
+
+class DepthEstimatorDataset(torch.utils.data.Dataset):
+    def __init__(self, path, split, max_items=0):
         super().__init__()
         assert split in ['evaluation', 'training']
         self.path = path
@@ -20,6 +28,9 @@ class DepthEstimatorDataset(Dataset):
         anno_file = os.path.join(path, split, f'anno_{split}.pickle')
         with open(anno_file, 'rb') as f:
             self.sample_ids = list(pickle.load(f).keys())
+        
+        if max_items and max_items > len(self.sample_ids):
+            self.sample_ids = self.sample_ids[:max_items]
 
     def __len__(self):
         return len(self.sample_ids)
