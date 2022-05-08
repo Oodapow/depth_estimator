@@ -8,7 +8,7 @@ if __name__ == '__main__':
     parser.add_argument('-dp', '--data_path', type=str, default='/home/oodapow/data/RHD_published_v2')
     parser.add_argument('-lr', '--learning_rate', type=float, default=0.01)
     parser.add_argument('-bs', '--batch_size', type=int, default=32)
-    parser.add_argument('-nw', '--num_workers', type=int, default=0)
+    parser.add_argument('-nw', '--num_workers', type=int, default=6)
     parser.add_argument('-ts', '--test_steps', type=int, default=1000)
     parser.add_argument('-ni', '--num_images', type=int, default=10)
     parser.add_argument('-ll', '--log_loss_rate', type=int, default=100)

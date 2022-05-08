@@ -44,7 +44,7 @@ class DepthEstimatorDataset(torch.utils.data.Dataset):
         mask = cv2.cvtColor(mask.clip(max=1) * 255, cv2.COLOR_BGR2GRAY).astype('uint8')
 
         depth = cv2.imread(os.path.join(self.path, self.split, 'depth', '%.5d.png' % sample_id))
-        depth = depth_two_uint8_to_float(depth[:, :, 2], depth[:, :, 1])
+        depth = 1 - depth_two_uint8_to_float(depth[:, :, 2], depth[:, :, 1])
 
         return image, mask, depth
 
