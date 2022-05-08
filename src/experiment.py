@@ -74,8 +74,8 @@ class EstimatorExperiment(pl.LightningModule):
         self.log(f'{split}/mean_mask_iou', mask_iou_sum / num_outputs)
 
 
-        for i in range(self.num_images):
-            images, masks, depths, e_masks, e_depths, _, _, _ = all_outputs[0]
+        for i in range(min(len(all_outputs), self.num_images)):
+            images, masks, depths, e_masks, e_depths, _, _, _ = all_outputs[i]
 
             image = Image.fromarray(np.uint8((images[0].permute(1, 2, 0) * 255).cpu().numpy()))
             mask = Image.fromarray(np.uint8((masks[0] * 255).cpu().numpy()))
