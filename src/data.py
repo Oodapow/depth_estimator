@@ -8,7 +8,7 @@ def depth_two_uint8_to_float(top_bits, bottom_bits):
     """ Converts a RGB-coded depth into float valued depth. """
     depth_map = (top_bits * 2**8 + bottom_bits).astype('float32')
     depth_map /= float(2**16 - 1)
-    return (depth_map * 255).astype('uint8')
+    return ((1. - depth_map) * 255).astype('uint8')
 
 
 def collate_fn(batch):
@@ -44,7 +44,7 @@ class DepthEstimatorDataset(torch.utils.data.Dataset):
         mask = cv2.cvtColor(mask.clip(max=1) * 255, cv2.COLOR_BGR2GRAY).astype('uint8')
 
         depth = cv2.imread(os.path.join(self.path, self.split, 'depth', '%.5d.png' % sample_id))
-        depth = 1 - depth_two_uint8_to_float(depth[:, :, 2], depth[:, :, 1])
+        depth = depth_two_uint8_to_float(depth[:, :, 2], depth[:, :, 1])
 
         return image, mask, depth
 
